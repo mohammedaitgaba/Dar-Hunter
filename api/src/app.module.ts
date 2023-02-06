@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersController } from './modules/users/users.controller';
-import { UsersService } from './modules/users/users.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './modules/users/users.module';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot(),
+    UsersModule,
+    MongooseModule.forRoot('mongodb://localhost/DarHunter')
+  ],
   controllers: [
-    AppController,
-    UsersController
   ],
   providers: [
-    AppService,
-    UsersService
   ],
 })
 export class AppModule {}
