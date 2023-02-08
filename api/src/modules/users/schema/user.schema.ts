@@ -15,5 +15,7 @@ export class User {
     Birthday:Date
     @Prop()
     Password:String
+    @Prop({default:false})
+    Deleted:boolean
 }
 export const UserSchema = SchemaFactory.createForClass(User)

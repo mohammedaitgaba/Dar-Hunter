@@ -1,10 +1,13 @@
 import { Body, Controller, Get, Post,UsePipes,ValidationPipe } from '@nestjs/common';
-import { Param, Query } from '@nestjs/common/decorators';
-import { NavigationOption } from 'src/utils/types';
+import { Param, Put, Query } from '@nestjs/common/decorators';
+import { NavigationOption, UserType } from 'src/utils/types';
 import { CreateUserDto } from '../Auth/dto/RegiterUser.dto';
 import { SignUserDto } from '../Auth/dto/SignUser.dto';
 import { UsersService } from './users.service';
-
+interface Confirmation {
+    Password:String
+    id:String
+}
 @Controller('users')
 export class UsersController {
     constructor(private UsersService : UsersService){}
@@ -23,4 +26,9 @@ export class UsersController {
     getUserById(@Param('id') id: String) {
         return this.UsersService.GetUserById(id)
     }
+    @Put('UpdateUser')
+    UpdateUserInfo(@Body() UserInfo:UserType){        
+        return this.UsersService.UpdateUser(UserInfo)
+    }
+
 }
