@@ -6,6 +6,7 @@ import { CreateUserDto } from '../Auth/dto/RegiterUser.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt/dist';
 import { SignUserDto } from '../Auth/dto/SignUser.dto';
+import { NavigationOption } from 'src/utils/types';
 @Injectable()
 export class UsersService {
     constructor(
@@ -21,12 +22,14 @@ export class UsersService {
             return {user}
         }
     }
-    async FetchUsers():Promise<{users}>{
-        const users = await this.userModel.find().select('-Password')
+    async FetchUsers(option:NavigationOption):Promise<{users:{},Total:number}>{
+        const {Limit,Page}=option
+        const Total = await this.userModel.count()
+        const users = await this.userModel.find().select('-Password').skip((Page -1)*Limit).limit(Limit)
         if (!users) {
             throw new  HttpException('No Users found',HttpStatus.BAD_REQUEST)
         }else{
-            return {users}
+            return {"users":users,"Total":Total}
         }
     }
 }
