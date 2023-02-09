@@ -30,5 +30,12 @@ export class UsersController {
     UpdateUserInfo(@Body() UserInfo:UserType){        
         return this.UsersService.UpdateUser(UserInfo)
     }
-
+    @Post('DeleteAcc')
+    DeleteAcc(@Body() Confirmation:Confirmation){
+        return this.UsersService.CloseAcc(Confirmation)
+    }
+    @Get('DeletedUsers')
+    GetDeletedUsers(){
+        return this.UsersService.FtechDeletedUsers()
+    }
 }

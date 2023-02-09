@@ -18,9 +18,8 @@ export class UsersService {
         const user = await this.userModel.findById(id).select('-Password')
         if (!user||user.Deleted==true) {  
             throw new NotFoundException(`User Not found`);
-        } else {
-            return {user}
         }
+        return {user}
     }
     async FetchUsers(option:NavigationOption):Promise<{users:{},Total:number}>{
         const {Limit,Page}=option
@@ -30,23 +29,53 @@ export class UsersService {
         }).select('-Password').skip((Page -1)*Limit).limit(Limit)
         if (!users) {
             throw new  HttpException('No Users found',HttpStatus.BAD_REQUEST)
-        }else{
-            return {"users":users,"Total":Total}
         }
+        return {"users":users,"Total":Total}
+        
     }
-    async UpdateUser(UserInfo:UserType):Promise<{message:String}>{
+    async FtechDeletedUsers():Promise<{deletedUser:{}}>{
+        const deletedUser = await this.userModel.find({
+            Deleted:true
+        })
+        if (!deletedUser) {
+            throw new  HttpException('No Deleted Users found',HttpStatus.BAD_REQUEST)     
+        }
+        return {deletedUser}
+    }
+    async UpdateUser(UserInfo:UserType):Promise<{message:string}>{
         const checkUser = await this.userModel.findById(UserInfo.id)
         if (!checkUser) {
             throw new  HttpException('User Not Found',HttpStatus.BAD_REQUEST)
         } 
-        else{
-         const updatedUser = await this.userModel.findByIdAndUpdate(UserInfo.id,UserInfo,{
+        const updatedUser = await this.userModel.findByIdAndUpdate(UserInfo.id,UserInfo,{
             new:true
-         })
+        })
          if (!updatedUser) {
             throw new  HttpException('Update failed',HttpStatus.BAD_REQUEST)
-         }
-         return{message:'Updated succesfully'}
         }
+        return{message:'Updated succesfully'}
+    
+}
+async CloseAcc(Confirmation:any):Promise<{message:string}>{
+    // check user if he is existed
+    const checkUser = await this.userModel.findOne({_id:Confirmation.id,Deleted:false})
+    if (!checkUser) {
+        throw new  HttpException('oops User not found ',HttpStatus.BAD_REQUEST) 
+    }
+
+    // when the user is existed we need to check his password if correct
+    const isPasswordValide = await bcrypt.compare(Confirmation.Password,checkUser.Password)
+    if (!isPasswordValide) { 
+        throw new  HttpException('Password invalid',HttpStatus.BAD_REQUEST)     
+    }
+    const deleted = await this.userModel.findByIdAndUpdate(Confirmation.id, {
+        $set: {
+            Deleted: true
+        }
+    })
+    if (!deleted) {
+        throw new  HttpException('Delete failed ',HttpStatus.NOT_MODIFIED)     
+    }
+    return {message:"Deleted"}
     }
 }
