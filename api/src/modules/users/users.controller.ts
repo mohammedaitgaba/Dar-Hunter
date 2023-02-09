@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Post,UsePipes,ValidationPipe } from '@nestjs/common';
 import { Param, Put, Query } from '@nestjs/common/decorators';
 import { NavigationOption, UserType } from 'src/utils/types';
-import { CreateUserDto } from '../Auth/dto/RegiterUser.dto';
-import { SignUserDto } from '../Auth/dto/SignUser.dto';
 import { UsersService } from './users.service';
 interface Confirmation {
     Password:String
