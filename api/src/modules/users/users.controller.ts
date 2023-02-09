@@ -38,4 +38,8 @@ export class UsersController {
     GetDeletedUsers(){
         return this.UsersService.FtechDeletedUsers()
     }
+    @Put('PromoteUser')
+    PromoteUser(@Body() data:{id:string}){
+        return this.UsersService.PromoteUserToggler(data)
+    }
 }

@@ -11,25 +11,10 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      
-      useFactory:(config: ConfigService) => {
-        
-        return {
-          secret: config.get<string>('JWT_SECRET'),
-          signOptions: {
-            expiresIn: config.get<string | number>('JWT_EXPIRE')
-          }
-        }
-      },
-      inject :[ConfigService]
-    }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService,ConfigService]
+  providers: [UsersService]
 })
 export class UsersModule implements NestModule { 
   configure(consumer: MiddlewareConsumer) {

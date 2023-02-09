@@ -11,8 +11,7 @@ import { NavigationOption, UserType } from 'src/utils/types';
 export class UsersService {
     constructor(
         @InjectModel(User.name)
-        private userModel:Model<User>,
-        private jwtService:JwtService
+        private userModel:Model<User>
     ){}
     async GetUserById(id:String):Promise<{user:{}}>{
         const user = await this.userModel.findById(id).select('-Password')
@@ -77,5 +76,33 @@ async CloseAcc(Confirmation:any):Promise<{message:string}>{
         throw new  HttpException('Delete failed ',HttpStatus.NOT_MODIFIED)     
     }
     return {message:"Deleted"}
+    }
+    async PromoteUserToggler(data:{id:string}):Promise<{message:string}>{        
+        const checkUser = await this.userModel.findOne({_id:data.id,Deleted:false})
+        if (!checkUser) {
+            throw new  HttpException('User Not Found',HttpStatus.BAD_REQUEST)     
+        }
+        if (checkUser.Trusted == false) {
+            const promoted =  await this.userModel.findByIdAndUpdate({_id:data.id}, {
+                $set: {
+                    Trusted: true
+                }
+            })
+            if(!promoted){
+                throw new  HttpException('Somthing went worng...',HttpStatus.BAD_REQUEST)     
+            }
+            return {message:'Promoted successfully'}
+        }
+        if (checkUser.Trusted == true) {
+            const demoted =  await this.userModel.findByIdAndUpdate({_id:data.id}, {
+                $set: {
+                    Trusted: false
+                }
+            })
+            if(!demoted){
+                throw new  HttpException('Somthing went worng...',HttpStatus.BAD_REQUEST)     
+            }
+            return {message:'Demoted successfully'}
+        }
     }
 }

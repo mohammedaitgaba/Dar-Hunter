@@ -16,6 +16,8 @@ export class User {
     @Prop()
     Password:String
     @Prop({default:false})
+    Trusted:boolean
+    @Prop({default:false})
     Deleted:boolean
 }
 export const UserSchema = SchemaFactory.createForClass(User)
