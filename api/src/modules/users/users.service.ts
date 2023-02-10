@@ -2,10 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException,HttpException, Htt
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schema/user.schema';
-import { CreateUserDto } from '../Auth/dto/RegiterUser.dto';
 import * as bcrypt from 'bcryptjs';
-import { JwtService } from '@nestjs/jwt/dist';
-import { SignUserDto } from '../Auth/dto/SignUser.dto';
 import { NavigationOption, UserType } from 'src/utils/types';
 @Injectable()
 export class UsersService {
