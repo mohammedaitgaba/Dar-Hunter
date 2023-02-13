@@ -48,6 +48,28 @@ export class PostsService {
         if (!updatePost) {
             throw new HttpException('Something went wrong please try again...',HttpStatus.BAD_REQUEST) 
         }
-        return {message:'Updated succ'}
+        return {message:'Updated Succesfully'}
+    }
+    async DeletePost(id:string):Promise<{message:string}>{
+        const checkPost = await this.postModel.findOne({_id:id,Deleted:false})
+        if (!checkPost) {
+            throw new HttpException('Post not found',HttpStatus.BAD_REQUEST)
+        }
+        const deletePost = await this.postModel.findByIdAndUpdate(id,{$set: {
+            Deleted: true
+        }})
+        if (!deletePost) {
+            throw new HttpException('Oups Somthing went wrong...',HttpStatus.BAD_REQUEST)
+        }
+        return{message:'Deleted Succesfully'}
+    }
+    async FetchDeletedPosts():Promise<{deletedPosts:{}}>{
+        const deletedPosts = await this.postModel.find({
+            Deleted:true
+        })
+        if (!deletedPosts) {
+            throw new  HttpException('No Deleted Posts found',HttpStatus.BAD_REQUEST)     
+        }
+        return {deletedPosts}
     }
 }
