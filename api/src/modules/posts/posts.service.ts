@@ -3,7 +3,7 @@ import { HttpException, NotFoundException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePostDto } from 'src/shared/dto/CreatePost.dto';
-import { NavigationOption } from 'src/utils/types';
+import { NavigationOption, PostType } from 'src/utils/types';
 import { Post } from './schema/post.schema';
 
 @Injectable()
@@ -29,5 +29,25 @@ export class PostsService {
             throw new Error('Post creation failed')
         }
         return {message:'Created post succ'}
+    }
+    async GetPostById(id:string):Promise<{post:{}}>{
+        const post = await this.postModel.findOne({_id:id,Deleted:false}).populate("Maker",'-Password -createdAt -updatedAt -Birthday')
+        if (!post) {
+            throw new HttpException('Post not found',HttpStatus.BAD_REQUEST)
+        }
+        return {post}
+    }
+    async UpdatePost(data:PostType):Promise<{message:string}>{
+        const checkPost = await this.postModel.findOne({_id:data.id,Deleted:false})
+        if (!checkPost) {
+            throw new HttpException('Post not found',HttpStatus.BAD_REQUEST)
+        }
+        const updatePost = await this.postModel.findByIdAndUpdate(data.id,data,{
+            new:true
+        })
+        if (!updatePost) {
+            throw new HttpException('Something went wrong please try again...',HttpStatus.BAD_REQUEST) 
+        }
+        return {message:'Updated succ'}
     }
 }
