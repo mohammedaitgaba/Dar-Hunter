@@ -1,5 +1,6 @@
 import { Controller, ValidationPipe } from '@nestjs/common';
-import { Body, Delete, Get,Param,Post, Put, UsePipes } from '@nestjs/common/decorators';
+import { Body, Delete, Get,Param,Post, Put, UseGuards, UsePipes } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { CreatePostDto } from 'src/shared/dto/CreatePost.dto';
 import { NavigationOption, PostType } from 'src/utils/types';
 import { PostsService } from './posts.service';
@@ -17,17 +18,18 @@ export class PostsController {
        return this.postService.AddPost(postData)
     }
     @Get('onePost/:id')
-    GetPostById(@Param('id') id: string){
-        console.log("ff");
-        
+    @UseGuards(AuthGuard())
+    GetPostById(@Param('id') id: string){        
         return this.postService.GetPostById(id)
     }
     @Put('UpdatePost')
+    @UseGuards(AuthGuard())
     @UsePipes(new ValidationPipe())
     UpdatePostById(@Body() data:PostType){
         return this.postService.UpdatePost(data)
     }
     @Put('DeletePost')
+    @UseGuards(AuthGuard())
     SoftDeletePost(@Body() data:{id:string}){
         
         return this.postService.DeletePost(data.id)
