@@ -52,18 +52,21 @@ const Navbar = () => {
       textDecoration: "none",
     },
   });
+                            // backgroundColor: alpha('#ffffff', 0.15), // set opacity to 25%
+
 
   return (
+    <div className="fixed z-10 w-full">
     <Router>
-        <AppBar position="static" >
-        <Toolbar sx={{
+        <AppBar position="static" color="transparent" >
+        <Toolbar  sx={{
               color:'black',
-              backgroundColor: alpha('#ffffff', 1), // set opacity to 25%
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
               p: 2,
               display:'flex',
               justifyContent:'space-between'
           }}>
+
             <Logo to="/">
               <img src={LogoDarHunter} alt="Logo DarHunter" className="w-8"/>
               <img src={LogoText} alt="Logo DarHunter" className="w-28 h-4 m-2 "/>
@@ -104,6 +107,7 @@ const Navbar = () => {
         </Drawer>
         </AppBar>
     </Router>
+    </div>
 
   );
 };
