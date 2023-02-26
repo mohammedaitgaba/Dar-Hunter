@@ -58,13 +58,13 @@ const Navbar = () => {
   return (
     <div className="fixed z-10 w-full">
     <Router>
-        <AppBar position="static" color="transparent" >
+        <AppBar position="static"  sx={{backgroundColor: 'rgba(0, 0, 0, 0.01)',backdropFilter: 'blur(12px)'}} >
         <Toolbar  sx={{
               color:'black',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
               p: 2,
               display:'flex',
-              justifyContent:'space-between'
+              justifyContent:'space-around'
           }}>
 
             <Logo to="/">
@@ -76,16 +76,16 @@ const Navbar = () => {
                 <MenuIcon />
             </IconButton>
             ) : (
-              <>
-            <Box sx={{ display: "flex" }}>
-                {menuItems.map((item, index) => (
-                <Button key={index} color="inherit" component={Link} to={item.link} sx={{paddingLeft:'20px',paddingRight:'20px'}}>
-                    {item.text}
-                </Button>
-                ))}
-            </Box>
-            <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}}>Login</Button>
-              </>
+            <>
+              <Box sx={{ display: "flex" }}>
+                  {menuItems.map((item, index) => (
+                  <Button key={index} color="inherit" component={Link} to={item.link} sx={{paddingLeft:'20px',paddingRight:'20px'}}>
+                      {item.text}
+                  </Button>
+                  ))}
+              </Box>
+              <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}}>Login</Button>
+            </>
             )}
         </Toolbar>
         <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
