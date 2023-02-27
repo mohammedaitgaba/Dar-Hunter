@@ -1,6 +1,9 @@
 import backgroundImage from "../../assets/bannerBackground.png";
 import PrimaryButton from "../../components/buttons/PrimaryButton";
 import HomeFilter from "../../components/homeComponents/HomeFilter";
+import Posts from "../../components/homeComponents/Posts";
+import PremiumPosts from "../../components/homeComponents/PremiumPosts";
+
 
 const Home = () => {
   const handleClick = ()=>{
@@ -38,12 +41,26 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="self-center w-4/5 flex relative h-[35vh]">
+      <div className="self-center w-4/5 flex relative sm:h-[35vh] h-[65vh]">
           <HomeFilter/>
       </div>
-      <div >
-          HERE
-      </div>
+
+      <div className="w-[95%] self-center pt-5">
+        <div className="flex items-center py-8">
+            <div className="bg-black w-20 border h-[5px] rounded-md"></div>
+            <h3 className="font-semibold text-2xl pl-8">POPULAR</h3>
+        </div>
+
+        <div className="grid grid-cols-4 gap-6 ">
+            <div className="sm:col-span-3 col-span-4">
+                <Posts/>
+            </div>
+            <div className="sm:col-span-1 col-span-4">
+                <PremiumPosts/>
+            </div>
+        </div>
+  </div>
+
     </div>
   );
 };
