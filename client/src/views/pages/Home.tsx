@@ -8,7 +8,7 @@ const Home = () => {
     
   }
   return (
-    <div className="relative flex flex-col justify-center">
+    <div className="flex flex-col justify-center">
       <div
         className="bg-inherit bg-cover bg-fixed h-screen flex flex-col justify-center items-start w-full"
         style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -38,8 +38,11 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="w-4/5 self-center flex absolute top-[88%]">
-        <HomeFilter/>
+      <div className="self-center w-4/5 flex relative h-[35vh]">
+          <HomeFilter/>
+      </div>
+      <div >
+          HERE
       </div>
     </div>
   );

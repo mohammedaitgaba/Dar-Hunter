@@ -79,7 +79,7 @@ const HomeFilter = () => {
 
 
   return (
-    <div className='bg-white rounded-xl flex flex-col w-full self-center p-6 shadow-lg'>
+    <div className='bg-white rounded-xl flex flex-col w-full self-center p-6 shadow-lg absolute bottom-4'>
         <h3 className='font-semibold text-2xl pb-5'>Search For Available Properties</h3>
         <div className='flex flex-wrap  justify-center sm:justify-between'>
           <FormControl sx={{ m: 1, minWidth: 220  }}>

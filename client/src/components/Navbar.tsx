@@ -58,10 +58,10 @@ const Navbar = () => {
   return (
     <div className="fixed z-10 w-full">
     <Router>
-        <AppBar position="static"  sx={{backgroundColor: 'rgba(0, 0, 0, 0.01)',backdropFilter: 'blur(12px)'}} >
+        <AppBar position="static"  sx={{backgroundColor: 'rgba(255 , 255, 255, 0.41)',backdropFilter: 'blur(12px)'}} >
         <Toolbar  sx={{
               color:'black',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+              boxShadow: '0',
               p: 2,
               display:'flex',
               justifyContent:'space-around'
