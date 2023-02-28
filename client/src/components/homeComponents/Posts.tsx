@@ -22,9 +22,20 @@ const Posts = () => {
   }
   return (
     <div className='flex flex-col'>
-        <div className="shadow-lg p-4 w-full self-center bg-white" >
-          <DashboardOutlinedIcon fontSize="large" sx={!postsStyleSwitcher?{color:'#000080'}:{color:'#ADD8E6'}} onClick={()=>setPostsStyleSwitcher(false)} />
-          <ViewAgendaOutlinedIcon fontSize="large" sx={postsStyleSwitcher?{color:'#000080'}:{color:'#ADD8E6'}} onClick={()=>setPostsStyleSwitcher(true)}/>
+        <div className="flex justify-between shadow-lg p-4 w-full self-center bg-white" >
+          <div>
+            <DashboardOutlinedIcon fontSize="large" sx={!postsStyleSwitcher?{color:'#000080'}:{color:'#ADD8E6'}} onClick={()=>setPostsStyleSwitcher(false)} />
+            <ViewAgendaOutlinedIcon fontSize="large" sx={postsStyleSwitcher?{color:'#000080'}:{color:'#ADD8E6'}} onClick={()=>setPostsStyleSwitcher(true)}/>
+          </div>
+          <div className="relative text-gray-600 w-2/4">
+            <input type="search" name="search" placeholder="Search" className="bg-white border w-full h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"/>
+            <button type="submit" className="absolute right-0 top-0 mt-2 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
         </div>
         <div className='flex flex-wrap py-6 md:justify-between justify-center'>
           {

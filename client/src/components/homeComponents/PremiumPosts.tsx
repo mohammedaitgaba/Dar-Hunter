@@ -14,8 +14,8 @@ const PremiumPosts = () => {
         <WorkspacePremiumRoundedIcon fontSize="large" sx={{color:'#FFD700'}}/>
         premium
       </div>
-      <div className='py-6'>
-        <Card sx={{ maxWidth: 340, width:340,marginBottom:5 }}>
+      <div className='max-w-[100%] py-6'>
+        <Card sx={{ maxWidth: '100%', width:340,marginBottom:5 }}>
           <CardActionArea>
             <CardMedia
               component="img"

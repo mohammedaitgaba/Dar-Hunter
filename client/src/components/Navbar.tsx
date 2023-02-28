@@ -38,9 +38,9 @@ const Navbar = () => {
 
   const menuItems = [
     { text: "Home", link: "/" },
+    { text: "Account", link: "/account" },
     { text: "About", link: "/about" },
     { text: "Contact", link: "/contact" },
-    { text: "Properties", link: "/properties" },
   ];
 
   const Logo = styled(Link)({
@@ -57,7 +57,6 @@ const Navbar = () => {
 
   return (
     <div className="fixed z-10 w-full">
-    <Router>
         <AppBar position="static"  sx={{backgroundColor: 'rgba(255 , 255, 255, 0.41)',backdropFilter: 'blur(12px)'}} >
         <Toolbar  sx={{
               color:'black',
@@ -106,7 +105,6 @@ const Navbar = () => {
             </List>
         </Drawer>
         </AppBar>
-    </Router>
     </div>
 
   );
