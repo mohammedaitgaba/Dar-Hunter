@@ -19,8 +19,8 @@ import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import Divider from '@mui/material/Divider';
 
 
-import PostsUser from '../../components/dushboardUserComponents/PostsUser';
-import ProfileUser from '../../components/dushboardUserComponents/ProfileUser';
+import PostsUser from './PostsUser';
+import ProfileUser from './ProfileUser';
 
 
 const drawerWidth = 240;

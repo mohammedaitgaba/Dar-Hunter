@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
 import Home from "./views/pages/Home"
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
-import AccountUser from "./views/pages/DushboardUser"
+import Navbar from "./components/global/Navbar"
+import Footer from "./components/global/Footer"
+import AccountUser from "./views/user/DushboardUser"
 const App = () => {
   return (
     <>

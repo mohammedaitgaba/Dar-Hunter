@@ -1,5 +1,5 @@
 import backgroundImage from "../../assets/bannerBackground.png";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
+import PrimaryButton from "../../components/global/buttons/PrimaryButton";
 import HomeFilter from "../../components/homeComponents/HomeFilter";
 import Posts from "../../components/homeComponents/Posts";
 import PremiumPosts from "../../components/homeComponents/PremiumPosts";

@@ -5,7 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import Slider from '@mui/material/Slider';
-import PrimaryButton from '../buttons/PrimaryButton';
+import PrimaryButton from '../global/buttons/PrimaryButton';
 
 
 const HomeFilter = () => {

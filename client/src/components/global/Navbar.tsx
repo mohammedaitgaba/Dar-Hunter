@@ -3,23 +3,20 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Button,
   Drawer,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Box,
   useTheme,
   useMediaQuery,
   styled,
 } from "@mui/material";
-import { alpha } from '@mui/material/styles';
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import { Link, BrowserRouter as Router  } from "react-router-dom";
-import LogoDarHunter from '../assets/logo/LogoDarHunter.png'
-import LogoText from '../assets/logo/LogoText.png'
+import LogoDarHunter from '../../assets/logo/LogoDarHunter.png'
+import LogoText from '../../assets/logo/LogoText.png'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
