@@ -17,10 +17,40 @@ import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import { Link, BrowserRouter as Router  } from "react-router-dom";
 import LogoDarHunter from '../../assets/logo/LogoDarHunter.png'
 import LogoText from '../../assets/logo/LogoText.png'
+
+import LoginModal from "../authComponents/LoginModal";
+import RegisterModal from "../authComponents/RegisterModal";
+
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+
+  const handleRegisterClose = () => {
+    setRegisterOpen(false);
+  };
+
+  const handleLoginClose = () => {
+    setLoginOpen(false);
+
+  };
+  const switchModal = (acctualModal:string)=>{
+    if (acctualModal==='Login') {
+      setRegisterOpen(false);
+      setLoginOpen(true);
+    }else if (acctualModal==='Register') {
+      setLoginOpen(false);
+      setRegisterOpen(true);
+    }
+  }
+
+  const handleLoginClick = () => {
+    setLoginOpen(true);
+  };
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -80,7 +110,7 @@ const Navbar = () => {
                   </Button>
                   ))}
               </Box>
-              <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}}>Login</Button>
+              <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}} onClick={handleLoginClick}>Login</Button>
             </>
             )}
         </Toolbar>
@@ -102,6 +132,10 @@ const Navbar = () => {
             </List>
         </Drawer>
         </AppBar>
+
+
+        <RegisterModal open={registerOpen} handleClose={handleRegisterClose} handleSwitcher={switchModal} />
+        <LoginModal open={loginOpen} handleClose={handleLoginClose} handleSwitcher={switchModal} />
     </div>
 
   );
