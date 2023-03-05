@@ -1,4 +1,4 @@
-import React,{useRef,useState} from 'react';
+import React,{useRef,useState,useEffect} from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
@@ -11,6 +11,12 @@ import {
 } from "@mui/material";
 
 import PrimaryButton from '../global/buttons/PrimaryButton';
+import axios from 'axios';
+import { useSelector,useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { register,reset } from '../../redux/features/auth/AuthSlice';
+
 
 interface ModalProps{
     open:boolean
@@ -35,8 +41,21 @@ const Paper = styled('div')(({ theme }) => ({
 const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
     // form Refs 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const {user,isLoading,isError,isSuccess,message}=useSelector((state:any)=>state.auth)
+
+    useEffect(()=>{
+      if (isSuccess) {
+        toast.success('registred successfuly')        
+        handleClose()
+      }
+      if (isError) {
+        toast.error('Data error')
+      }
+      dispatch(reset())
+    },[user,isLoading,isError,isSuccess,message])
 
     const FNameRef =  useRef<HTMLInputElement | null>(null);
     const LNameRef =  useRef<HTMLInputElement | null>(null);
@@ -79,13 +98,13 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
       password:'',
       PasswordConfirmation:''
     };
-
+    
     const Email: string | null = getFieldValue(emailRef);
     const Password: string|null = getFieldValue(passwordRef);
-    const FName : string|null = getFieldValue(FNameRef);
-    const LName: string|null = getFieldValue(LNameRef);
+    const FirstName : string|null = getFieldValue(FNameRef);
+    const LastName: string|null = getFieldValue(LNameRef);
     const Phone: string|null = getFieldValue(PhoneRef);
-    const Brithday: string|null = getFieldValue(BrithdayRef);
+    const BrithdayDate: any = getFieldValue(BrithdayRef);
     const CIN: string|null = getFieldValue(CINRef);
     const PasswordConfirmation:string|null = getFieldValue(PasswordConfirmationRef);
 
@@ -110,22 +129,25 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
       errors.PasswordConfirmation = "Please Confirme your Password"
     }
     // Validate other inputes
-    !FName?errors.FName = "FName is required":''
-    !LName?errors.LName = "LName is required":''
+    !FirstName?errors.FName = "FName is required":''
+    !LastName?errors.LName = "LName is required":''
     !Phone?errors.Phone = "Phone is required":''
-    !Brithday?errors.Brithday = "Brithday is required":''
+    !BrithdayDate?errors.Brithday = "Brithday is required":''
     !CIN?errors.CIN = "CIN is required":''
 
     if (!Object.values(errors).some(v=>v)) {
       // Form is valid, submit it
-      setErrors(errors);
+      setErrors(errors);      
+      const dateObj = new Date(BrithdayDate);
+      const Birthday = dateObj.toISOString().toString();
+      
       return{
         Email,
         Password,
-        FName,
-        LName,
+        FirstName,
+        LastName,
         Phone,
-        Brithday,
+        Birthday,
         CIN
       }
 
@@ -135,11 +157,16 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
       return false
     }
   }
-
+  // const apiKey = process.env.REACT_APP_API_URL
   // submit form handler 
   const handleSubmit = ()=>{
+    // console.log(apiKey);
+    
     const formData = CheckInputsValidation()
     console.log(formData);
+    if (formData) {
+      dispatch(register(formData))
+    }
     
   }
   
@@ -157,6 +184,11 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
           <Typography  align="center" sx={isMobile?{fontSize:'20px'}:{fontSize:'26px'}}>
             We Are Glad To welcome You
           </Typography>
+          {
+            isLoading?
+            <Typography  align="center" sx={isMobile?{fontSize:'20px'}:{fontSize:'26px'}}>
+              Please wait ...
+            </Typography>:
             <form onSubmit={e => e.preventDefault()}>
               <Box sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <TextField
@@ -249,6 +281,7 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
               </Button>
             </Box>
             </form>
+          }
           </Paper>
         </Grid>
       </Grid>
