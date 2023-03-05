@@ -11,13 +11,15 @@ import {
 } from "@mui/material";
 
 import PrimaryButton from '../global/buttons/PrimaryButton';
-
 const Paper = styled('div')(({ theme }) => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  [theme.breakpoints.down('sm')]: {
+    width: '90%',
+  },
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[24],
   padding: theme.spacing(4),
@@ -35,13 +37,11 @@ const LoginModal = ({ open, handleClose,handleSwitcher}:ModalProps) => {
       email:'',
       password:''
     });
-
     const SwitchModal =()=>{
         handleSwitcher('Register')
     }
 
     const handleSubmit = ()=>{
-
       const errors = {
         email:'',
         password:''
