@@ -14,6 +14,8 @@ export class User {
     @Prop()
     Birthday:Date
     @Prop()
+    CIN:string
+    @Prop()
     Password:String
     @Prop({default:false})
     Trusted:boolean
