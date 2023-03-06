@@ -14,13 +14,17 @@ import {
   styled,
 } from "@mui/material";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
-import { Link, BrowserRouter as Router  } from "react-router-dom";
+import { Link, BrowserRouter as Router,useNavigate} from "react-router-dom";
 import LogoDarHunter from '../../assets/logo/LogoDarHunter.png'
 import LogoText from '../../assets/logo/LogoText.png'
 
 import LoginModal from "../authComponents/LoginModal";
 import RegisterModal from "../authComponents/RegisterModal";
 
+import { useSelector,useDispatch } from "react-redux";
+import { reset,logout } from "../../redux/features/auth/AuthSlice";
+import { AuthState } from "../../types/authState";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +33,10 @@ const Navbar = () => {
   
   const [registerOpen, setRegisterOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
+
+  const navigate = useNavigate()
+  const dispatch: Dispatch<any> = useDispatch();
+  const {user}= useSelector((state:any)=>state.auth)
 
   const handleRegisterClose = () => {
     setRegisterOpen(false);
@@ -51,6 +59,10 @@ const Navbar = () => {
   const handleLoginClick = () => {
     setLoginOpen(true);
   };
+  const handleLogout=()=>{
+    dispatch(logout())
+    dispatch(reset())
+  }
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -110,7 +122,12 @@ const Navbar = () => {
                   </Button>
                   ))}
               </Box>
-              <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}} onClick={handleLoginClick}>Login</Button>
+              {
+                user? 
+                <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}} onClick={()=>handleLogout()}>Logout</Button>
+                : 
+                <Button variant="outlined" sx={{ color:'black',borderColor: 'black', borderWidth: 2}} onClick={()=>handleLoginClick()}>Login</Button>
+              }
             </>
             )}
         </Toolbar>
