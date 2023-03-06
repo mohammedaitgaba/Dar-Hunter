@@ -16,6 +16,8 @@ import { useSelector,useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { register,reset } from '../../redux/features/auth/AuthSlice';
+import { AsyncThunkAction, Dispatch } from '@reduxjs/toolkit';
+import { User } from '../../types/user';
 
 
 interface ModalProps{
@@ -43,7 +45,9 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     // form Refs 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch: Dispatch<any> = useDispatch();
+    // const dispatch = useDispatch()
+
     const {user,isLoading,isError,isSuccess,message}=useSelector((state:any)=>state.auth)
 
     useEffect(()=>{
@@ -162,8 +166,7 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
   const handleSubmit = ()=>{
     // console.log(apiKey);
     
-    const formData = CheckInputsValidation()
-    console.log(formData);
+    const formData :any= CheckInputsValidation()
     if (formData) {
       dispatch(register(formData))
     }
