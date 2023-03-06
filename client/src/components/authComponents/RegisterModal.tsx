@@ -52,11 +52,10 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
 
     useEffect(()=>{
       if (isSuccess) {
-        toast.success('registred successfuly')        
         handleClose()
       }
       if (isError) {
-        toast.error('Data error')
+        toast.error(`Data error ${message}`)
       }
       dispatch(reset())
     },[user,isLoading,isError,isSuccess,message])

@@ -1,5 +1,5 @@
 
-import React, { useState,useRef  } from 'react';
+import React, { useState,useRef, useEffect  } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
@@ -11,6 +11,11 @@ import {
 } from "@mui/material";
 
 import PrimaryButton from '../global/buttons/PrimaryButton';
+import { Dispatch } from '@reduxjs/toolkit';
+import { useSelector,useDispatch } from 'react-redux';
+import { Login,reset } from '../../redux/features/auth/AuthSlice';
+
+
 const Paper = styled('div')(({ theme }) => ({
   position: 'absolute',
   top: '50%',
@@ -37,39 +42,58 @@ const LoginModal = ({ open, handleClose,handleSwitcher}:ModalProps) => {
       email:'',
       password:''
     });
+
+    const dispatch: Dispatch<any> = useDispatch();
+    const {user,isLoading,isError,isSuccess,message}=useSelector((state:any)=>state.auth)
+
+
     const SwitchModal =()=>{
         handleSwitcher('Register')
     }
 
-    const handleSubmit = ()=>{
+    const CheckInputsValidation= ()=>{
       const errors = {
         email:'',
         password:''
       };
-      const email: string | null = emailRef.current?.value ?? null;
-      const password:string|null = passwordRef.current?.value ??null;
+      const Email: string | null = emailRef.current?.value ?? null;
+      const Password:string|null = passwordRef.current?.value ??null;
       // Validate email
-      if (!email) {
+      if (!Email) {
         errors.email = "Email is required";
-      } else if (!/\S+@\S+\.\S+/.test(email)) {
+      } else if (!/\S+@\S+\.\S+/.test(Email)) {
         errors.email = "Email address is invalid";
       }
   
       // Validate password
-      if (!password) {
+      if (!Password) {
         errors.password = "Password is required";
-      } else if (password.length < 6) {
+      } else if (Password.length < 6) {
         errors.password = "Password must be at least 6 characters";
       }
   
-      if (Object.keys(errors).length === 0) {
+      if (Object.keys(errors).some(v=>v)) {
         // Form is valid, submit it
-        console.log("ddd");
-        console.log("Submitting form", { email, password });
+        setErrors(errors);      
+        return {
+          Email,
+          Password
+        }
       } else {
-        
-        // Form is invalid, update state with errors
         setErrors(errors);
+        return false
+      }
+    }
+    useEffect(()=>{
+      if (isSuccess) {
+        handleClose()
+      }
+      dispatch(reset())
+    },[user,isLoading,isError,isSuccess,message])
+    const handleSubmit = ()=>{
+      const formData:any = CheckInputsValidation()
+      if (formData) {
+        dispatch(Login(formData))
       }
     }
     return (
