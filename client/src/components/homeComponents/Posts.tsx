@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import ViewAgendaOutlinedIcon from '@mui/icons-material/ViewAgendaOutlined';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 
@@ -13,13 +13,34 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import image from '../../assets/ekko.jpg'
 
+import axios from 'axios';
+import { Post } from '../../types/post';
 const Posts = () => {
-  const [postsStyleSwitcher,setPostsStyleSwitcher] = React.useState(false)
-  const [like ,setLike]= React.useState(false)
-  let items=[]
-  for (let i = 0; i < 12; i++) {
-    items.push(i)
+  const [postsStyleSwitcher,setPostsStyleSwitcher] = useState(false)
+  const [like ,setLike]= useState(false)
+  const [posts,setPosts]=useState<[Post]>([])
+  const [actuallPage,setActuallPage] = useState<number>(1)
+  const [totalPages,setTotalPages] =useState<number>(0)
+  useEffect(()=>{
+    GetAllPosts()
+  },[actuallPage])
+  const GetAllPosts = async()=>{
+    setPosts([])
+    const response = await axios.post('http://localhost:3000/posts/AllPosts',{
+      Limit:3,
+      Page:actuallPage
+    })
+    if (response.data) {
+      setTotalPages(response.data.TotalPages)
+      response.data.posts?.forEach((element:Post) => {
+        setPosts(prevArray => [...prevArray, element])
+      });
+    }
   }
+  const handlePageChange = (event:any, page:number) => {
+    setActuallPage(page)
+  };
+
   return (
     <div className='flex flex-col'>
         <div className="flex justify-between shadow-lg p-4 w-full self-center bg-white" >
@@ -39,8 +60,8 @@ const Posts = () => {
         </div>
         <div className='flex flex-wrap py-6 md:justify-between justify-center'>
           {
-            items.map((item)=>(
-            <Card sx={!postsStyleSwitcher?{maxWidth: 345,position:'relative',marginBottom:5}:{width:'100%',position:'relative',marginBottom:5}}>
+            posts.map((post:Post)=>(
+            <Card sx={!postsStyleSwitcher?{maxWidth: 345,minWidth:340,position:'relative',marginBottom:5}:{width:'100%',position:'relative',marginBottom:5}}>
               <CardActionArea  sx={!postsStyleSwitcher?{display:'flex',flexDirection:'column'}:{display:'flex'}} >
                 <CardMedia
                   component="img"
@@ -51,17 +72,16 @@ const Posts = () => {
                 <FavoriteRoundedIcon color={'action'} sx={{position:'absolute', top:'5px',right:'5px',backgroundColor:'white',borderRadius:'50%',width:'35px',height:'35px'}}/>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                    {post.Title}                  
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
+                    {post.Description}
                   </Typography>
                 </CardContent>
   
                 <CardContent sx={{ width:'100%',display:'flex', justifyContent:'space-between'}}>
                   <Typography gutterBottom variant="h6" component="div" sx={{fontWeight:'600'}}>
-                    1000dh
+                    {post.Price}
                   </Typography>
                   <BookmarkBorderOutlinedIcon fontSize="medium"/>
                 </CardContent>
@@ -74,7 +94,7 @@ const Posts = () => {
         </div>
         <div className='self-center pt-4 '>
           <Stack spacing={2}>
-              <Pagination count={10} shape="rounded" color="primary"/>
+              <Pagination count={totalPages} shape="rounded" color="primary" onChange={handlePageChange}/>
             </Stack>
         </div>
     </div>

@@ -12,16 +12,17 @@ export class PostsService {
         @InjectModel(Post.name)
         private postModel:Model<Post>
     ){}
-    async FetchPosts(options:NavigationOption):Promise<{posts:{},Total:number}>{
+    async FetchPosts(options:NavigationOption):Promise<{posts:{},Total:number,TotalPages:number}>{
         const {Limit,Page}=options
         const Total = await this.postModel.count({Deleted: false})
+        const TotalPages = Math.ceil(Total/Limit)
         const posts = await this.postModel.find({
             Deleted: false
         }).skip((Page -1)*Limit).limit(Limit).populate("Maker",'-Password -createdAt -updatedAt -Birthday')
         if (!posts) {
             throw new  HttpException('No Posts found',HttpStatus.BAD_REQUEST)
         }
-        return {"posts":posts,"Total":Total}
+        return {"posts":posts,"Total":Total,"TotalPages":TotalPages}
     }
     async AddPost(postData:CreatePostDto):Promise<{message:string}>{
         const post = this.postModel.create(postData)
