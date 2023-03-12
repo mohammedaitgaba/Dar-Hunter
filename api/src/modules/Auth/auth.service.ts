@@ -14,7 +14,7 @@ export class AuthService {
         private jwtService:JwtService
     ){}
 
-    async SignUp(CreateUserDto:CreateUserDto):Promise<{token:string}> {
+    async SignUp(CreateUserDto:CreateUserDto):Promise<{LoggedUser:{}}> {
         const {FirstName,LastName,Email,CIN,Phone, Birthday,Password}=CreateUserDto
         const hashedPassword = await bcrypt.hash(Password,10) 
         const UserExist = await this.userModel.findOne({Email})
@@ -32,9 +32,15 @@ export class AuthService {
         })
     
         const token = this.jwtService.sign({id:user._id})
-        return {token}
+        const LoggedUser = {
+            token,
+            email:user.Email,
+            FirstName:user.FirstName,
+            LastName:user.LastName
+        }
+        return {LoggedUser}
     }
-    async SignIn(SignUserDto:SignUserDto):Promise<{token:String}>{
+    async SignIn(SignUserDto:SignUserDto):Promise<{LoggedUser:{}}>{
         const {Email ,Password} = SignUserDto
         const user = await this.userModel.findOne({Email})
         if (!user) {
@@ -45,6 +51,12 @@ export class AuthService {
             throw new UnauthorizedException('invalide email or password')
         }
         const token = this.jwtService.sign({id:user._id})
-        return {token}
+        const LoggedUser = {
+            token,
+            email:user.Email,
+            FirstName:user.FirstName,
+            LastName:user.LastName
+        }
+        return {LoggedUser}
     }
 }

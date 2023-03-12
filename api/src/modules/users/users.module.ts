@@ -1,6 +1,5 @@
 import { Module, NestModule,MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthMiddleware } from 'src/Middlewares/auth/auth.middleware';
 import { UserSchema } from './schema/user.schema';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
@@ -12,11 +11,13 @@ import { UsersService } from './users.service';
   controllers: [UsersController],
   providers: [UsersService]
 })
-export class UsersModule implements NestModule { 
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).exclude({
-      path:'users/AllUsers',
-      method: RequestMethod.GET
-    }).forRoutes(UsersController)
-  }
+export class UsersModule 
+// implements NestModule 
+{ 
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(AuthMiddleware).exclude({
+  //     path:'users/AllUsers',
+  //     method: RequestMethod.GET
+  //   }).forRoutes(UsersController)
+  // }
  }

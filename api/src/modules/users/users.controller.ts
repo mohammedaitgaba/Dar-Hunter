@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post,UsePipes,ValidationPipe } from '@nestjs/common';
-import { Param, Put, Query } from '@nestjs/common/decorators';
+import { Param, Put, Query, UseGuards } from '@nestjs/common/decorators';
+import { AuthGuard } from '@nestjs/passport';
 import { NavigationOption, UserType } from 'src/utils/types';
 import { UsersService } from './users.service';
 interface Confirmation {
@@ -16,11 +17,13 @@ export class UsersController {
 
     //     return { med: "tester" }
     // }
+    
     @Post('AllUsers')
     FetchUsers(@Body() option:NavigationOption){        
         return this.UsersService.FetchUsers(option)
     }
     @Get(':id')
+    // @UseGuards(AuthGuard('jwt'))
     getUserById(@Param('id') id: String) {
         return this.UsersService.GetUserById(id)
     }
@@ -40,4 +43,5 @@ export class UsersController {
     PromoteUser(@Body() data:{id:string}){
         return this.UsersService.PromoteUserToggler(data)
     }
+
 }

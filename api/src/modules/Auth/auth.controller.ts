@@ -8,12 +8,12 @@ export class AuthController {
     constructor(private authService : AuthService){}
     @Post('Register')
     @UsePipes(new ValidationPipe())
-    AddNewUser(@Body() userData: CreateUserDto):Promise<{token:String}> {
+    AddNewUser(@Body() userData: CreateUserDto):Promise<{LoggedUser:{}}> {
         return this.authService.SignUp(userData)
     }
     @Post('SignIn')
     @UsePipes(new ValidationPipe())
-    SignInUser(@Body() signInData:SignUserDto):Promise<{token:String}>{
+    SignInUser(@Body() signInData:SignUserDto):Promise<{LoggedUser:{}}>{
         return this.authService.SignIn(signInData)
     }
 }
