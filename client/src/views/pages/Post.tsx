@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import axios from 'axios';
 
+
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions,Box,Grid,Divider,Avatar, Stack, styled, Paper   } from '@mui/material';
+import { Button, CardActionArea, CardActions,Box,Grid,Divider,Avatar, Stack, styled, Paper, useTheme, useMediaQuery   } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
@@ -16,32 +17,38 @@ import Myimages from '../../assets/ekko.jpg'
 
 import PremiumPosts from '../../components/homeComponents/PremiumPosts'
 import SwipeableTextMobileStepper from '../../components/postComponents/imageSlider'
+import Map from '../../components/postComponents/Map';
 import { Post } from '../../types/post';
 import { display } from '@mui/system';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body1,
     padding: theme.spacing(2),
-    margin: theme.spacing(2),
+    // margin: theme.spacing(2),
     textAlign: 'center',
     display:'flex',
     alignItems:'center',
     justifyContent:'center',
     color: theme.palette.text.primary,
+    borderRadius:0
   }));
+  
+  export default function SinglePost() {
+      const images = [Myimage,Myimages,Myimage,Myimages]
+      const {user}= useSelector((state:any)=>state.auth)
+      const apiUrl = import.meta.env.VITE_API_URL;
 
-export default function SinglePost() {
-    const images = [Myimage,Myimages,Myimage,Myimages]
-    const {user}= useSelector((state:any)=>state.auth)
+      const theme = useTheme();
+      const isMobile = useMediaQuery(theme.breakpoints.down("md"));
     
     const { id } = useParams();
     const [post,setPost]=useState<Post>()
     useEffect(() => {
-        GetPostById()
+        GetPostById()        
     }, [])
 
     const GetPostById = ()=>{
-        axios.get(`http://localhost:3000/posts/onePost/${id}`,{
+        axios.get(`${apiUrl}/posts/onePost/${id}`,{
             headers: {
                 'Authorization': 'Bearer ' + user.LoggedUser.token,
                 'Content-Type': 'application/json'
@@ -53,9 +60,9 @@ export default function SinglePost() {
         .catch(err=>console.log(err))
     }
   return (
-    <Box sx={{ flexGrow: 1 ,padding:10 ,paddingTop:15 }}>
+    <Box sx={!isMobile ?{ flexGrow: 1 , padding:10 ,paddingTop:15 }:{flexGrow: 1 , padding:1 ,paddingTop:15}}>
       <Grid container spacing={2}>
-        <Grid item xs={9}>
+        <Grid item xs={isMobile ? 12 : 9} >
           {post?
             <Box sx={{display:'flex',width:'100%'}}>
                 <Card sx={{ maxWidth: '100%' }}>
@@ -113,7 +120,7 @@ export default function SinglePost() {
                         <Typography variant="h5">
                             Details:                         
                         </Typography>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} sx={{marginTop:2}}>
                             <Grid item xs={6}>
                                 <Stack>
                                     <Item><Typography fontWeight={600}>Property type : </Typography> {post.PropertyType} </Item>
@@ -147,10 +154,16 @@ export default function SinglePost() {
                 </Box>
         }
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={isMobile ? 12 : 3}>
             <PremiumPosts/>
         </Grid>
       </Grid>
+      <Box>
+        {
+            post?<Map data={post.Location[0]} />:null
+
+        }
+      </Box>
     </Box>
   );
 }
