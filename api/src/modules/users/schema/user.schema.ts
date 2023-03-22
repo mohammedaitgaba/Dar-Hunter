@@ -4,19 +4,21 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 })
 export class User {
     @Prop()
-    FirstName:String
+    FirstName:string
     @Prop()
-    LastName:String
+    LastName:string
     @Prop({unique: [true,'Duplicated email']})
-    Email:String
+    Email:string
     @Prop()
     Phone:String
+    @Prop()
+    ProfilePicUrl:string
     @Prop()
     Birthday:Date
     @Prop()
     CIN:string
     @Prop()
-    Password:String
+    Password:string
     @Prop({default:false})
     Trusted:boolean
     @Prop({default:false})

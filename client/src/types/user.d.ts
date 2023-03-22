@@ -6,4 +6,6 @@ export interface User{
     Phone:string
     Birthday:Date
     CIN:string
+    ProfilePicUrl?:string
+    createdAt?:Date
 }

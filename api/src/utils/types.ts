@@ -3,6 +3,7 @@ export type UserType = {
     FirstName:String
     LastName:String
     Email:String
+    ProfilePicUrl:string
     Phone:String
     Birthday:Date
     Password:String

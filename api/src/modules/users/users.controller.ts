@@ -28,10 +28,12 @@ export class UsersController {
         return this.UsersService.GetUserById(id)
     }
     @Put('UpdateUser')
-    UpdateUserInfo(@Body() UserInfo:UserType){        
+    @UseGuards(AuthGuard())
+    UpdateUserInfo(@Body() UserInfo:UserType){                
         return this.UsersService.UpdateUser(UserInfo)
     }
     @Post('DeleteAcc')
+    @UseGuards(AuthGuard())
     DeleteAcc(@Body() Confirmation:Confirmation){
         return this.UsersService.CloseAcc(Confirmation)
     }

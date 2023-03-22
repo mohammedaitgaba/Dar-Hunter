@@ -64,6 +64,7 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
     const LNameRef =  useRef<HTMLInputElement | null>(null);
     const emailRef = useRef<HTMLInputElement | null>(null);
     const PhoneRef = useRef<HTMLInputElement | null>(null);
+    const ProfilePicUrl = "";
     const BrithdayRef = useRef<HTMLInputElement | null>(null);
     const CINRef = useRef<HTMLInputElement | null>(null);
     const passwordRef =  useRef<HTMLInputElement | null>(null);
@@ -149,6 +150,7 @@ const RegisterModal = ({ open, handleClose,handleSwitcher }:ModalProps) => {
         Password,
         FirstName,
         LastName,
+        ProfilePicUrl,
         Phone,
         Birthday,
         CIN
