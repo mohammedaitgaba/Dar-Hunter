@@ -7,6 +7,7 @@ import Post from "./views/pages/Post";
 import Navbar from "./components/global/Navbar"
 import Footer from "./components/global/Footer"
 import AccountUser from "./views/user/DushboardUser"
+import ProtectedRoutes from "./utils/protected/ProtectedUserRoutes";
 
 const App = () => {
   return (
@@ -16,7 +17,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={[<Home/>, <Footer/>]}/>
         <Route path="/posts/:id" element={[<Post/>, <Footer/>]}/>
-        <Route path="/account/*" element={<AccountUser/>}/>
+        <Route element={<ProtectedRoutes/>}>
+            <Route path="/account/*" element={<AccountUser/>}/>
+        </Route>     
       </Routes>
     </BrowserRouter>
     <ToastContainer/>
