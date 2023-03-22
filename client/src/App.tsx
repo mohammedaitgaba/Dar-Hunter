@@ -15,7 +15,7 @@ const App = () => {
       <Navbar/>
       <Routes>
         <Route path="/" element={[<Home/>, <Footer/>]}/>
-        <Route path="/posts/:id" element={[<Post/>]}/>
+        <Route path="/posts/:id" element={[<Post/>, <Footer/>]}/>
         <Route path="/account/*" element={<AccountUser/>}/>
       </Routes>
     </BrowserRouter>

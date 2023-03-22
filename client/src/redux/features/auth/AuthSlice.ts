@@ -18,6 +18,7 @@ const initialState: AuthState = {
     user:user? user:null,
     message:''
 }
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export const register = createAsyncThunk<AuthState["user"], User, { rejectValue: string }>('userRegister',async(user:User,thunkApi)=>{
     try {
@@ -45,7 +46,7 @@ export const logout = createAsyncThunk('userLogout',async()=>{
 })
 
 const loginUser = async(userData:LoginInfo)=>{
-    const response = await axios.post('http://localhost:3000/auth/SignIn',userData)
+    const response = await axios.post(`${apiUrl}/auth/SignIn`,userData)
     if (response.data) {
         localStorage.setItem('user',JSON.stringify(response.data))
     }
@@ -55,7 +56,7 @@ const LogoutUser = async()=>{
     localStorage.removeItem('user')
 }
 const registerUser = async (userData:User)=>{
-    const response =  await axios.post('http://localhost:3000/auth/Register',userData)
+    const response =  await axios.post(`${apiUrl}/auth/Register`,userData)
     if (response.data) {
         localStorage.setItem('user',JSON.stringify(response.data))
     }

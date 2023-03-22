@@ -19,22 +19,24 @@ import { Link } from 'react-router-dom';
 const Posts = () => {
   const [postsStyleSwitcher,setPostsStyleSwitcher] = useState(false)
   const [like ,setLike]= useState(false)
-  const [posts,setPosts]=useState<[Post]>([])
+  const [posts,setPosts]=useState<Post[]|null>([])
   const [actuallPage,setActuallPage] = useState<number>(1)
   const [totalPages,setTotalPages] =useState<number>(0)
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(()=>{
     GetAllPosts()
   },[actuallPage])
   const GetAllPosts = async()=>{
     setPosts([])
-    const response = await axios.post('http://localhost:3000/posts/AllPosts',{
+    const response = await axios.post(`${apiUrl}/posts/AllPosts`,{
       Limit:3,
       Page:actuallPage
     })
     if (response.data) {
       setTotalPages(response.data.TotalPages)
       response.data.posts?.forEach((element:Post) => {
-        setPosts(prevArray => [...prevArray, element])
+        setPosts((prevArray:any) => [...prevArray, element])
       });
     }
   }
@@ -61,6 +63,7 @@ const Posts = () => {
         </div>
         <div className='flex flex-wrap py-6 md:justify-between justify-center'>
           {
+            posts?
             posts.map((post:Post)=>(
               <Link to={`posts/${post._id}`}>
                 <Card sx={!postsStyleSwitcher?{maxWidth: 345,minWidth:340,position:'relative',marginBottom:5}:{width:'100%',position:'relative',marginBottom:5}}>
@@ -91,7 +94,7 @@ const Posts = () => {
                   </CardActionArea>
                 </Card>
               </Link>
-            ))
+            )):null
           }
 
         </div>

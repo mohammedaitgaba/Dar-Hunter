@@ -55,7 +55,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -71,7 +71,7 @@ export default function PersistentDrawerLeft() {
 
   return (
     <div className='pt-[76px] flex h-screen'>
-        <Box sx={{ display: 'flex'}}>
+        <Box sx={{ display: 'flex',width:'100%'}}>
         <CssBaseline />
             <IconButton
                 color="inherit"
@@ -120,11 +120,12 @@ export default function PersistentDrawerLeft() {
                 </ListItem>
                 <Divider />
               </Link>
+              
             ))}
             </List>
 
         </Drawer>
-        <Main open={open}>
+        <Main open={open} sx={{width:'100%',backgroundColor:'white'}}>
             <Routes>
                 <Route path='/' element={<ProfileUser/>}/>
                 <Route path='/myPosts' element={<PostsUser/>}/>
