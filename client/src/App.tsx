@@ -8,6 +8,7 @@ import Navbar from "./components/global/Navbar"
 import Footer from "./components/global/Footer"
 import AccountUser from "./views/user/DushboardUser"
 import ProtectedRoutes from "./utils/protected/ProtectedUserRoutes";
+import AddPost from "./views/Post/AddPost";
 
 const App = () => {
   return (
@@ -18,7 +19,8 @@ const App = () => {
         <Route path="/" element={[<Home/>, <Footer/>]}/>
         <Route path="/posts/:id" element={[<Post/>, <Footer/>]}/>
         <Route element={<ProtectedRoutes/>}>
-            <Route path="/account/*" element={<AccountUser/>}/>
+          <Route path="/AddPost" element={[<AddPost/>, <Footer/>]}/>
+          <Route path="/account/*" element={<AccountUser/>}/>
         </Route>     
       </Routes>
     </BrowserRouter>
