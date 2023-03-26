@@ -14,6 +14,9 @@ const AddPost = () => {
             setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
     };
+    const handleSubmit = ()=>{
+        console.log("d")
+    }
   return (
     <div className='py-24 px-12 flex flex-col items-center justifyContent-center'>
         <div className='md:w-8/12 w-full '>
@@ -23,8 +26,12 @@ const AddPost = () => {
             <Form step={activeStep}/>
         </div>
         {
-            activeStep<=2?
+            activeStep<2?
             <button onClick={handleNext}>next</button>:null
+        }
+        {
+            activeStep>=2?
+            <button onClick={handleSubmit}>Submit</button>:null 
         }
         {
             activeStep>0?
