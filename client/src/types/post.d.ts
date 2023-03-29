@@ -36,7 +36,6 @@ export interface Post {
             updatedAt: Date,
 }
 export interface PostData {
-    _id: string
     Title: string,
     Description: string,
     Price: number,
