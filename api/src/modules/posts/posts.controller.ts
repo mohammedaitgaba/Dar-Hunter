@@ -18,7 +18,6 @@ export class PostsController {
        return this.postService.AddPost(postData)
     }
     @Get('onePost/:id')
-    @UseGuards(AuthGuard())
     GetPostById(@Param('id') id: string){        
         return this.postService.GetPostById(id)
     }

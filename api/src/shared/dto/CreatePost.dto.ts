@@ -33,12 +33,12 @@ export class CreatePostDto {
         latit: number
     }]
 
-    @IsObject()
-    Details: {
+    @IsArray()
+    Details: [{
         Surface: number,
         Rooms: number,
         floors: number
-    }
+    }]
     
     @IsNotEmpty()
     @IsNumber()
