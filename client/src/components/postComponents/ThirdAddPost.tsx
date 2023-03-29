@@ -1,6 +1,8 @@
 import { Box, Grid, TextField, Paper,Select, MenuItem ,InputLabel, Typography} from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from "react-redux";
+import {updatePostData} from "../../redux/features/PostSlice";
 
 type DetailsData = {
     Rooms: number;
@@ -8,13 +10,15 @@ type DetailsData = {
     floors: number;
   };
   
-const ThirdAddPost = ({ postData, setPostData }:any) => {
-    useEffect(()=>{
-        console.log(postData);
-    },[postData])
+const ThirdAddPost = () => {
+
+  const postData = useSelector((state:any) => state.postData.postData);        
+  const dispatch = useDispatch();
 
     const handleDetailsChange = (field: keyof DetailsData, value: number) => {
-        setPostData({
+      
+      dispatch(updatePostData(
+        {
           ...postData,
           Details: [
             {
@@ -22,7 +26,8 @@ const ThirdAddPost = ({ postData, setPostData }:any) => {
               [field]: value,
             },
           ],
-        });
+        }
+      ))
       };
   return (
     <Box sx={{ flexGrow: 1 ,paddingTop:5}}>

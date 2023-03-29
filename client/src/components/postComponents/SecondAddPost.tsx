@@ -2,18 +2,25 @@ import { Box, Grid, TextField, Paper,Select, MenuItem ,InputLabel, Typography} f
 import React, { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from "react-redux";
+import {updatePostData} from "../../redux/features/PostSlice";
 
 const MapToken = import.meta.env.VITE_MAP_Key;
 
 mapboxgl.accessToken = MapToken;
+const SecondAddPost = () => {
+  
+    const postData = useSelector((state:any) => state.postData.postData);
+    const dispatch = useDispatch();
 
-const SecondAddPost = ({ postData, setPostData }:any) => {
-
+    
     const mapContainerRef = useRef(null);
     const [map, setMap] = useState(null);
     let marker:any = null
+
+
     useEffect(() => {
-      const initializeMap = ({ setMap, mapContainerRef }) => {
+      const initializeMap = ({ setMap, mapContainerRef }:any) => {
         const map = new mapboxgl.Map({
           container: mapContainerRef.current,
           style: 'mapbox://styles/mapbox/streets-v11',
@@ -25,16 +32,16 @@ const SecondAddPost = ({ postData, setPostData }:any) => {
           setMap(map);
   
           map.on('click', (event) => {
-            const coordinates = [event.lngLat.lng, event.lngLat.lat];
-            setPostData({
-                ...postData,
-                Location: [
-                  {
-                    lang: coordinates[0],
-                    latit: coordinates[1],
-                  },
-                ],
-              });   
+            const coordinates:[number,number] = [event.lngLat.lng, event.lngLat.lat];
+            dispatch(updatePostData({
+              ...postData,
+              Location: [
+                {
+                  lang: coordinates[0],
+                  latit: coordinates[1],
+                },
+              ],
+            }  ))
             if (!marker) {
               const newMarker = new mapboxgl.Marker({ draggable: true }).setLngLat(coordinates).addTo(map);
               
@@ -42,7 +49,7 @@ const SecondAddPost = ({ postData, setPostData }:any) => {
               newMarker.on('dragend', () => {
                   const lngLat = newMarker.getLngLat();
                 console.log(`Marker is now at longitude: ${lngLat.lng} and latitude: ${lngLat.lat}`);
-                setPostData({
+                  dispatch(updatePostData({
                     ...postData,
                     Location: [
                       {
@@ -50,11 +57,10 @@ const SecondAddPost = ({ postData, setPostData }:any) => {
                         latit: lngLat.lat,
                       },
                     ],
-                  });
+                  }  ))
               });
             } else {
               marker.setLngLat(coordinates);
-              console.log(coordinates);
               
             }
           });
@@ -66,10 +72,10 @@ const SecondAddPost = ({ postData, setPostData }:any) => {
   
 
     const handleChange = (e:any)=>{
-        setPostData({
-            ...postData,
-            [e.target.name]: e.target.value,
-          });
+      dispatch(updatePostData({
+        ...postData,
+        [e.target.name]: e.target.value,
+      }));
     }  
   return (
     <Box sx={{ flexGrow: 1 ,paddingTop:5}}>
