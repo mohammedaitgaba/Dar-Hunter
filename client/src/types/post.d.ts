@@ -6,6 +6,7 @@ export interface Post {
                 LastName: string,
                 Email: string,
                 Phone: string,
+                ProfilePicUrl:string,
                 Trusted: boolean,
                 Deleted: boolean,
                 __v: number
@@ -32,6 +33,7 @@ export interface Post {
                     floors: number
                 }
             ],
+            Pics:[]
             createdAt: Date,
             updatedAt: Date,
 }

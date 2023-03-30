@@ -39,6 +39,8 @@ export class CreatePostDto {
         Rooms: number,
         floors: number
     }]
+    @IsArray()
+    Pics: []
     
     @IsNotEmpty()
     @IsNumber()

@@ -34,6 +34,8 @@ export class Post {
         lang: number
         latit: number
     }]
+    @Prop()
+    Pics:[]
 
 }
 export const PostSchema = SchemaFactory.createForClass(Post)

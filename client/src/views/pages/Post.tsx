@@ -34,7 +34,6 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
   
   export default function SinglePost() {
-      const images = [Myimage,Myimages,Myimage,Myimages]
       const {user}= useSelector((state:any)=>state.auth)
       const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -46,6 +45,10 @@ const Item = styled(Paper)(({ theme }) => ({
     useEffect(() => {
         GetPostById()        
     }, [])
+    useEffect(() => {
+        console.log(post);
+        
+    }, [post])
 
     const GetPostById = ()=>{
         axios.get(`${apiUrl}/posts/onePost/${id}`,{
@@ -69,7 +72,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
                     {/* images container  */}
                 <CardActionArea>
-                    <SwipeableTextMobileStepper data={images}/>
+                    <SwipeableTextMobileStepper data={post.Pics}/>
                 </CardActionArea>
 
                 <Box sx={{padding:3}}>
@@ -88,7 +91,7 @@ const Item = styled(Paper)(({ theme }) => ({
                     {/* posts Maker Info  */}
                     <Box sx={{display:'flex',justifyContent:'space-between', paddingTop:2,paddingBottom:2}}>
                         <Box sx={{display:'flex',alignItems:'center'}}>
-                            <Avatar alt="Remy Sharp" src={Myimages}   sx={{ width: 80, height: 80 }}/>
+                            <Avatar alt="Remy Sharp" src={post.Maker.ProfilePicUrl}   sx={{ width: 80, height: 80 }}/>
                             <Typography paddingLeft={2}>
                                 {post.Maker.FirstName} {post.Maker.LastName}
                             </Typography>

@@ -70,7 +70,7 @@ const Posts = () => {
                   <CardActionArea  sx={!postsStyleSwitcher?{display:'flex',flexDirection:'column'}:{display:'flex'}} >
                     <CardMedia
                       component="img"
-                      image={image}
+                      image={post.Pics[0]}
                       alt="Profile pic" 
                       sx={!postsStyleSwitcher?{height:'280px',maxHeight:'300px'}:{maxWidth:'200px'}}
                     />

@@ -23,9 +23,7 @@ const initialState = {
           floors: 0,
         },
       ],
-      Pics: {
-        url: "",
-      },
+      Pics: []
     },
   };
 
@@ -33,16 +31,11 @@ const postDataSlice = createSlice({
   name: "postData",
   initialState,
   reducers: {
-    setPostData: (state, action) => {
-      return action.payload;
-    },
     updatePostData: (state, action) => { 
-      
       state.postData = { ...state.postData, ...action.payload };
-      console.log(state.postData,"state.postData ");
     },
   },
 });
 
-export const { setPostData,updatePostData } = postDataSlice.actions;
+export const { updatePostData } = postDataSlice.actions;
 export default postDataSlice.reducer;

@@ -47,7 +47,7 @@ const AddPost = () => {
   }
   const tirdStepValidation = {
     Details,
-    // Pics,
+    Pics,
   }
   // get id and token from user state so we can pass it with req
 
