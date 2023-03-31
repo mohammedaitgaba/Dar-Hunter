@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
-import { Box, Grid, TextField, Paper,Select, MenuItem ,InputLabel} from '@mui/material';
+import { Box, Grid, TextField, Paper,Select, MenuItem ,InputLabel,RadioGroup,Radio,FormControlLabel} from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
 import {updatePostData} from "../../redux/features/PostSlice";
 import PropertyImage from "../../assets/property.jpg"
@@ -27,34 +27,32 @@ const FirstAddPost = () => {
             <Box component={Paper} sx={{ p: 3 }}>
               <form >
                 <InputLabel id="type-label">Transaction Type</InputLabel>
-                <Select
-                    labelId="type-label"
-                    name='TransactionType'
-                    value={postData.TransactionType}
-                    label="Type"
-                    onChange={(event)=>handleChange("TransactionType",String(event.target.value))}
-                    sx={{width:'100%',marginBottom:3}}
+                <RadioGroup
+                  aria-label="transaction-type"
+                  name="TransactionType"
+                  value={postData.TransactionType}
+                  onChange={(event)=>handleChange("TransactionType",String(event.target.value))}
+                  sx={{display:'flex',flexDirection:'row',padding:2,justifyContent:'space-between'}}
                 >
-                    <MenuItem value="Sell" >Sell</MenuItem>
-                    <MenuItem value="Rent">Rent</MenuItem>
-                    <MenuItem value="Demande">Demande</MenuItem>
-                    <MenuItem value="Mortgage" >Mortgage</MenuItem>
-                </Select>
-                <InputLabel id="type-label">Property Type</InputLabel>
-                <Select
-                    labelId="type-label"
-                    name='PropertyType'
-                    value={postData.PropertyType}
-                    label="Type"
-                    onChange={(event)=>handleChange("PropertyType",String(event.target.value))}
-                    sx={{width:'100%',marginBottom:3}}
+                  <FormControlLabel value="Sale" control={<Radio />} label="Sale" />
+                  <FormControlLabel value="Rent" control={<Radio />} label="Rent" />
+                  <FormControlLabel value="Demande" control={<Radio />} label="Demande" />
+                  <FormControlLabel value="Mortgage" control={<Radio />} label="Mortgage" />
+                </RadioGroup>
 
+                <InputLabel id="type-label">Property Type</InputLabel>
+                <RadioGroup
+                  aria-label="PropertyType"
+                  name="PropertyType"
+                  value={postData.PropertyType}
+                  onChange={(event)=>handleChange("PropertyType",String(event.target.value))}
+                  sx={{display:'flex',flexDirection:'row',padding:2,justifyContent:'space-between'}}
                 >
-                    <MenuItem value="Home" >Home</MenuItem>
-                    <MenuItem value="Appartment">Appartment</MenuItem>
-                    <MenuItem value="Villa">Villa</MenuItem>
-                    <MenuItem value="GroundSpot" >GroundSpot</MenuItem>
-                </Select>
+                  <FormControlLabel value="Home" control={<Radio />} label="Home" />
+                  <FormControlLabel value="Appartment" control={<Radio />} label="Appartment" />
+                  <FormControlLabel value="Villa" control={<Radio />} label="Villa" />
+                  <FormControlLabel value="GroundSpot" control={<Radio />} label="GroundSpot" />
+                </RadioGroup>
                 <TextField
                     name="Title"
                     label="Title"

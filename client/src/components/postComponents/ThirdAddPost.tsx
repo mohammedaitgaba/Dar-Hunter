@@ -203,8 +203,6 @@ const ThirdAddPost = () => {
                 <Button variant="outlined" onClick={handleimagesUploader} sx={{marginTop:3}}>Upload</Button>
 
               }
-
-
             </Box>
           </Box>
         </Grid>
