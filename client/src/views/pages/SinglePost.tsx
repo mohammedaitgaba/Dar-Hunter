@@ -1,25 +1,22 @@
 import  React,{useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from "react-redux";
+
 import axios from 'axios';
 
 
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions,Box,Grid,Divider,Avatar, Stack, styled, Paper, useTheme, useMediaQuery   } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 
-import Myimage from '../../assets/bannerBackground.png'
-import Myimages from '../../assets/ekko.jpg'
 
 import PremiumPosts from '../../components/homeComponents/PremiumPosts'
 import SwipeableTextMobileStepper from '../../components/postComponents/imageSlider'
 import Map from '../../components/postComponents/Map';
 import { Post } from '../../types/post';
-import { display } from '@mui/system';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body1,

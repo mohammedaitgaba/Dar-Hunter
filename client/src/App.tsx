@@ -3,12 +3,13 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 
 import Home from "./views/pages/Home"
-import Post from "./views/pages/Post";
+import Post from "./views/pages/SinglePost";
 import Navbar from "./components/global/Navbar"
 import Footer from "./components/global/Footer"
 import AccountUser from "./views/user/DushboardUser"
 import ProtectedRoutes from "./utils/protected/ProtectedUserRoutes";
 import AddPost from "./views/Post/AddPost";
+import UpdatePost from "./views/pages/UpdatePost";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/posts/:id" element={[<Post/>, <Footer/>]}/>
         <Route element={<ProtectedRoutes/>}>
           <Route path="/AddPost" element={[<AddPost/>, <Footer/>]}/>
+          <Route path="/updatePost/:id" element={[<UpdatePost/>, <Footer/>]}/>
           <Route path="/account/*" element={<AccountUser/>}/>
         </Route>     
       </Routes>

@@ -48,7 +48,7 @@ const Home = () => {
       <div className="w-[95%] self-center pt-5">
         <div className="flex items-center py-8">
             <div className="bg-black w-20 border h-[5px] rounded-md"></div>
-            <h3 className="font-semibold text-2xl pl-8">POPULAR</h3>
+            <h3 className="font-semibold text-2xl pl-8">LATEST PUB</h3>
         </div>
 
         <div className="grid grid-cols-4 gap-6 ">
