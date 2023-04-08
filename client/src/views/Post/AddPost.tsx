@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import jwt_decode from 'jwt-decode';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const AddPost = () => {
@@ -14,6 +16,7 @@ const AddPost = () => {
   const dispatch = useDispatch();
   const postData = useSelector((state: any) => state.postData.postData);
   const {user}= useSelector((state:any)=>state.auth)
+  const navigate = useNavigate();
 
   let notValid:boolean = true
 
@@ -88,6 +91,7 @@ const handleBack = () => {
       axios.post(`${apiUrl}/posts/NewPost`,formData)
       .then(res=>{
         toast.success(`${res.data.message}`)
+        navigate('/')
       })
       .catch(err=>{
         toast.error(`Data error  ${err.message}`)

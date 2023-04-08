@@ -10,10 +10,6 @@ const FirstAddPost = () => {
     
   const postData = useSelector((state:any) => state.postData.postData);  
   const dispatch = useDispatch();
-  useEffect(()=>{
-    console.log(postData);
-    
-  },[postData])
     const handleChange = (field:string , value: string|number)=>{      
           dispatch(updatePostData({
             ...postData,
