@@ -38,12 +38,21 @@ export class PostsService {
         }
         return {post}
     }
+
+    async GetMyPosts(id:string):Promise<{MyPosts:{}}>{
+        const MyPosts = await this.postModel.find({
+            Maker:id,
+            Deleted:false
+        })
+        return {MyPosts}
+    }
     async UpdatePost(data:PostType):Promise<{message:string}>{
-        const checkPost = await this.postModel.findOne({_id:data.id,Deleted:false})
+        console.log(data);
+        const checkPost = await this.postModel.findOne({_id:data._id,Deleted:false})
         if (!checkPost) {
             throw new HttpException('Post not found',HttpStatus.BAD_REQUEST)
         }
-        const updatePost = await this.postModel.findByIdAndUpdate(data.id,data,{
+        const updatePost = await this.postModel.findByIdAndUpdate(data._id,data,{
             new:true
         })
         if (!updatePost) {
@@ -51,18 +60,19 @@ export class PostsService {
         }
         return {message:'Updated Succesfully'}
     }
-    async DeletePost(id:string):Promise<{message:string}>{
-        const checkPost = await this.postModel.findOne({_id:id,Deleted:false})
+    async DeletePost(data):Promise<{message:string}>{
+        
+        const checkPost = await this.postModel.findOne({_id:data.id_post,Deleted:false})
         if (!checkPost) {
             throw new HttpException('Post not found',HttpStatus.BAD_REQUEST)
         }
-        const deletePost = await this.postModel.findByIdAndUpdate(id,{$set: {
+        const deletePost = await this.postModel.findByIdAndUpdate(data.id_post,{$set: {
             Deleted: true
         }})
         if (!deletePost) {
             throw new HttpException('Oups Somthing went wrong...',HttpStatus.BAD_REQUEST)
         }
-        return{message:'Deleted Succesfully'}
+        return{message:`Deleted Succesfully`}
     }
     async FetchDeletedPosts():Promise<{deletedPosts:{}}>{
         const deletedPosts = await this.postModel.find({

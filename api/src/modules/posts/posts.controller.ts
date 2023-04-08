@@ -21,6 +21,10 @@ export class PostsController {
     GetPostById(@Param('id') id: string){        
         return this.postService.GetPostById(id)
     }
+    @Post('myPosts')
+    GetMyPosts(@Body() id:{maker:string}){
+        return this.postService.GetMyPosts(id.maker)
+    }
     @Put('UpdatePost')
     @UseGuards(AuthGuard())
     @UsePipes(new ValidationPipe())
@@ -29,9 +33,8 @@ export class PostsController {
     }
     @Put('DeletePost')
     @UseGuards(AuthGuard())
-    SoftDeletePost(@Body() data:{id:string}){
-        
-        return this.postService.DeletePost(data.id)
+    SoftDeletePost(@Body() data:{post_id:string,id:string}){                
+        return this.postService.DeletePost(data)
     }
     @Get('ArchivePosts')
     GetDeletedPosts(){

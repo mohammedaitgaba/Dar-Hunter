@@ -9,7 +9,7 @@ export type UserType = {
     Password:String
 }
 export type PostType = {
-    id:string
+    _id:string
     Maker: string
     Title:string
     Description:string
@@ -25,6 +25,7 @@ export type PostType = {
         lang: number
         latit: number
     }]
+    Pics:[string]
 }
 export type NavigationOption ={
     Limit:number
