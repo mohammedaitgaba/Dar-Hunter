@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Post } from "../../types/post";
 import { useSelector } from "react-redux";
@@ -9,7 +9,9 @@ import ViewAgendaOutlinedIcon from "@mui/icons-material/ViewAgendaOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 import {
   Card,
@@ -24,7 +26,22 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { styled } from "@mui/system";
+import { toast } from "react-toastify";
+
 const apiUrl = import.meta.env.VITE_API_URL;
+
+const IconHolder = styled("form")(({ theme }) => ({
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center',
+  width: "35px",
+  height: "35px",
+  backgroundColor: "white",
+  borderRadius: "50%",
+  marginLeft:1,
+  marginRight:1
+}));
 
 const Posts = () => {
   const [postsStyleSwitcher, setPostsStyleSwitcher] = useState(false);
@@ -32,32 +49,47 @@ const Posts = () => {
   const [actuallPage, setActuallPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { user } = useSelector((state: any) => state.auth);
+  const navigate = useNavigate();
+  const [id,setId]=useState('')
+  // get id and token from user state so we can pass it with req  
 
-  const {user}= useSelector((state:any)=>state.auth)
-
-  // get id and token from user state so we can pass it with req
-
-  const token:string = user?.LoggedUser?.token
-  const decodedToken:{id:string} = jwt_decode(token);
-  const id = decodedToken?.id; 
 
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const navigate = useNavigate();
 
   const handleUpdate = (id: string) => {
     navigate(`/updatePost/${id}`);
   };
 
-  const handleNavigateToPost = (id:string)=>{
+  const handleNavigateToPost = (id: string) => {
     navigate(`posts/${id}`);
-  }
+  };
 
   // handle deleting a post by id
-  const handleDelete = (id: string) => {
-    handleClose();
+  const handleDelete = async(id_post: string) => {
+    const data = {id_post,id}
+    
+    await axios.put(`${apiUrl}/posts/DeletePost`,data,{
+      headers: {
+          'Authorization': 'Bearer ' +user?.LoggedUser?.token,
+          'Content-Type': 'application/json'
+        }
+    })
+  .then(res=>{
+    console.log(res.data);
+    if (res.data) {
+      toast.success(`${res.data.message}`)
+      GetAllPosts()
+
+    }
+  })
+  .catch(err=>{
+    console.log(err.message)
+    toast.error(`Data error  ${err.message}`)
+  })
   };
 
   const handleClose = () => {
@@ -66,6 +98,7 @@ const Posts = () => {
 
   // this part handle getting posts from server
   useEffect(() => {
+    checkTokenUser()
     GetAllPosts();
   }, [actuallPage]);
 
@@ -82,6 +115,15 @@ const Posts = () => {
       });
     }
   };
+  const checkTokenUser = ()=>{
+    
+    const token =  user?.LoggedUser?.token
+    if (token) { 
+      const decodedToken: { id: string } = jwt_decode(token);
+      setId(decodedToken?.id);
+    }
+
+  }
   const handlePageChange = (event: any, page: number) => {
     setActuallPage(page);
   };
@@ -113,7 +155,7 @@ const Posts = () => {
             className="bg-white border w-full h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
           />
           <button type="submit" className="absolute right-0 top-0 mt-2 mr-4">
-            <SearchOutlinedIcon/>
+            <SearchOutlinedIcon />
           </button>
         </div>
       </div>
@@ -135,7 +177,7 @@ const Posts = () => {
                 <CardActionArea
                   sx={
                     !postsStyleSwitcher
-                      ? { display: "flex", flexDirection: "column"}
+                      ? { display: "flex", flexDirection: "column" }
                       : { display: "flex" }
                   }
                 >
@@ -146,76 +188,61 @@ const Posts = () => {
                     sx={
                       !postsStyleSwitcher
                         ? { height: "280px", maxHeight: "300px" }
-                        : { maxWidth: "200px" ,maxHeight: "250px",minHeight:'250px'}
+                        : {
+                            maxWidth: "200px",
+                            maxHeight: "250px",
+                            minHeight: "250px",
+                          }
                     }
-                    onClick={()=>handleNavigateToPost(post._id)}
+                    onClick={() => handleNavigateToPost(post._id)}
                   />
                   {
-                    id===post.Maker._id &&
-                  <Box
+                  id === post.Maker._id && 
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        display: "flex",
+                        top: "10px",
+                        right: "10px",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <IconHolder onClick={() => handleUpdate(post._id)}>
+                        <CreateOutlinedIcon />
+                      </IconHolder>
+                      <IconHolder>
+                        <DeleteOutlinedIcon onClick={() => handleDelete(post._id)}/>
+                      </IconHolder>
+                    </Box>
+                  
+                }
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {post.Title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {post.Description}
+                      {id}
+                    </Typography>
+                  </CardContent>
+
+                  <CardContent
                     sx={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "30px",
-                      borderRadius: "50%",
-                      width: "35px",
-                      height: "35px",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <Button
-                      id="basic-button"
-                      aria-controls={open ? "basic-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
-                      onClick={handleClick}
-                      sx={{ padding: 0 }}
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="div"
+                      sx={{ fontWeight: "600" }}
                     >
-                      <ExpandMoreOutlinedIcon />
-                    </Button>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
-                      }}
-                    >
-                      <MenuItem onClick={() => handleUpdate(post._id)}>
-                        Update
-                      </MenuItem>
-                      <MenuItem onClick={() => handleDelete(post._id)}>
-                        Delete
-                      </MenuItem>
-                    </Menu>
-                  </Box>
-                  }
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {post.Title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {post.Description}
-                      </Typography>
-                    </CardContent>
-
-                    <CardContent
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography
-                        gutterBottom
-                        variant="h6"
-                        component="div"
-                        sx={{ fontWeight: "600" }}
-                      >
-                        {post.Price} DH
-                      </Typography>
-                      <BookmarkBorderOutlinedIcon fontSize="medium" />
-                    </CardContent>
+                      {post.Price} DH
+                    </Typography>
+                    <BookmarkBorderOutlinedIcon fontSize="medium" />
+                  </CardContent>
                 </CardActionArea>
               </Card>
             ))
@@ -223,7 +250,12 @@ const Posts = () => {
       </div>
       <div className="self-center pt-4 ">
         <Stack spacing={2}>
-          <Pagination count={totalPages} shape="rounded" color="primary" onChange={handlePageChange}/>
+          <Pagination
+            count={totalPages}
+            shape="rounded"
+            color="primary"
+            onChange={handlePageChange}
+          />
         </Stack>
       </div>
     </div>
@@ -231,5 +263,3 @@ const Posts = () => {
 };
 
 export default Posts;
-
-
